@@ -1,4 +1,4 @@
-import type { Cookies, RequestEvent } from '@sveltejs/kit';
+import type { Cookies } from '@sveltejs/kit';
 import { Client, Account, type Models, Users, ID } from 'luke-appwrite-ssr-test';
 import { APPWRITE_KEY } from '$env/static/private';
 
@@ -29,11 +29,11 @@ export class AppwriteService {
 	}
 
 	setForwardedHeaders(headers: Headers): void {
-		const forwardedIp = headers.get('x-forwarded-for');
-		if (forwardedIp) this.client.setForwardedFor(forwardedIp);
+		const originalIp = headers.get('origin');
+		if (originalIp) this.client.setForwardedFor(originalIp);
 
-		const forwardedUserAgent = headers.get('x-forwarded-user-agent');
-		if (forwardedUserAgent) this.client.setForwardedUserAgent(forwardedUserAgent);
+		const userAgent = headers.get('user-agent');
+		if (userAgent) this.client.setForwardedUserAgent(userAgent);
 	}
 
 	async getLoggedInUser(): Promise<Models.User<Models.Preferences> | undefined> {

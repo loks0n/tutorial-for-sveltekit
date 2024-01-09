@@ -1,5 +1,4 @@
 <script>
-	import { enhance } from '$app/forms';
 	import '@appwrite.io/pink';
 	import '@appwrite.io/pink-icons';
 

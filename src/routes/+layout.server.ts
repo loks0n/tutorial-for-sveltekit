@@ -1,4 +1,4 @@
-export function load({ locals, depends }) {
+export function load({ locals }) {
 	const { user } = locals;
 
 	return {
