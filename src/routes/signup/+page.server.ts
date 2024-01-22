@@ -1,6 +1,6 @@
 import { SESSION_COOKIE } from '$lib/server/appwrite.js';
 import { redirect } from '@sveltejs/kit';
-import { ID } from 'node-appwrite';
+import { ID } from 'luke-node-appwrite-ssr';
 
 export function load({ locals }) {
 	if (locals.user) throw redirect(301, '/');
@@ -17,7 +17,7 @@ export const actions = {
 		const password = form.get('password') as string;
 
 		await account.create(ID.unique(), name, email, password);
-		const session = await account.createEmailSession(email, password);
+		const session = await account.createEmailPasswordSession(email, password);
 
 		cookies.set(SESSION_COOKIE, session.secret, {
 			path: '/',

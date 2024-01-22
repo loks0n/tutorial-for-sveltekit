@@ -7,7 +7,7 @@ export async function GET({ url, locals, cookies }) {
 	const secret = url.searchParams.get('secret');
 
 	if (userId && secret) {
-		const session = await account.exchangeTokenForSession(userId, secret);
+		const session = await account.createSession(userId, secret);
 
 		cookies.set(SESSION_COOKIE, session.secret, {
 			path: '/',

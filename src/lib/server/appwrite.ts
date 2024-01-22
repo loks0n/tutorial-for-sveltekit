@@ -1,5 +1,5 @@
 import type { Cookies } from '@sveltejs/kit';
-import { Client, Account, type Models, Users } from 'node-appwrite';
+import { Client, Account, type Models, Users } from 'luke-node-appwrite-ssr';
 import { APPWRITE_KEY } from '$env/static/private';
 
 export const SESSION_COOKIE = 'a_session';
