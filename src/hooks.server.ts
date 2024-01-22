@@ -1,4 +1,4 @@
-import { AppwriteService } from '$lib/appwrite';
+import { AppwriteService } from '$lib/server/appwrite';
 
 export async function handle({ event, resolve }) {
 	const appwrite = new AppwriteService();

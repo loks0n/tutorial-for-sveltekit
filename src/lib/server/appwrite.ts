@@ -1,8 +1,8 @@
 import type { Cookies } from '@sveltejs/kit';
-import { Client, Account, type Models, Users, ID } from 'luke-appwrite-ssr-test';
+import { Client, Account, type Models, Users } from 'node-appwrite';
 import { APPWRITE_KEY } from '$env/static/private';
 
-const SESSION_COOKIE_NAME = 'a_session';
+export const SESSION_COOKIE = 'a_session';
 const PROJECT_ID = '6544e1b4ae36c03a1f34';
 
 export class AppwriteService {
@@ -21,7 +21,7 @@ export class AppwriteService {
 	}
 
 	setSessionFromCookies(cookies: Cookies): boolean {
-		const session = cookies.get(SESSION_COOKIE_NAME);
+		const session = cookies.get(SESSION_COOKIE);
 		if (!session) return false;
 
 		this.client.setSession(session);
@@ -42,32 +42,5 @@ export class AppwriteService {
 		} catch (error) {
 			return undefined;
 		}
-	}
-
-	async register(
-		email: string,
-		password: string,
-		name: string,
-		cookies: Cookies
-	): Promise<Models.Session> {
-		await this.account.create(ID.unique(), email, password, name);
-		return this.login(email, password, cookies);
-	}
-
-	async login(email: string, password: string, cookies: Cookies): Promise<Models.Session> {
-		const session = await this.account.createEmailSession(email, password);
-		cookies.set(SESSION_COOKIE_NAME, session.secret, {
-			path: '/',
-			httpOnly: true,
-			sameSite: 'strict',
-			expires: new Date(session.expire),
-			secure: true
-		});
-		return session;
-	}
-
-	async logout(cookies: Cookies): Promise<void> {
-		cookies.delete(SESSION_COOKIE_NAME);
-		await this.account.deleteSession('current');
 	}
 }
