@@ -18,7 +18,9 @@ export const actions = {
 
 		cookies.set(SESSION_COOKIE, session.secret, {
 			sameSite: 'strict',
-			expires: new Date(session.expire)
+			expires: new Date(session.expire),
+			secure: true,
+			path: '/'
 		});
 
 		throw redirect(301, '/');
