@@ -1,9 +1,10 @@
 import type { Cookies } from '@sveltejs/kit';
 import { Client, Account, type Models, Users } from 'luke-node-appwrite-ssr';
 import { APPWRITE_KEY } from '$env/static/private';
+import { PUBLIC_APPWRITE_ENDPOINT } from '$env/static/public';
 
 export const SESSION_COOKIE = 'a_session';
-const PROJECT_ID = '6544e1b4ae36c03a1f34';
+const PROJECT_ID = 'ssr';
 
 export class AppwriteService {
 	client: Client;
@@ -12,7 +13,7 @@ export class AppwriteService {
 
 	constructor() {
 		this.client = new Client()
-			.setEndpoint('http://localhost/v1')
+			.setEndpoint(PUBLIC_APPWRITE_ENDPOINT)
 			.setProject(PROJECT_ID)
 			.setKey(APPWRITE_KEY);
 
@@ -36,11 +37,16 @@ export class AppwriteService {
 		if (userAgent) this.client.setForwardedUserAgent(userAgent);
 	}
 
-	async getLoggedInUser(): Promise<Models.User<Models.Preferences> | undefined> {
+	async getLoggedInUser(): Promise<Models.User<Models.Preferences> | null> {
+		let user: Models.User<Models.Preferences> | null;
 		try {
-			return await this.account.get();
+			user = await this.account.get();
 		} catch (error) {
-			return undefined;
+			return null;
 		}
+
+		if (!user.$id) return null;
+
+		return user;
 	}
 }

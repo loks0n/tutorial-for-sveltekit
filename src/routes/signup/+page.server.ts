@@ -16,15 +16,14 @@ export const actions = {
 		const email = form.get('email') as string;
 		const password = form.get('password') as string;
 
-		await account.create(ID.unique(), name, email, password);
+		console.table({ name, email, password });
+
+		await account.create(ID.unique(), email, password, name);
 		const session = await account.createEmailPasswordSession(email, password);
 
 		cookies.set(SESSION_COOKIE, session.secret, {
-			path: '/',
-			httpOnly: true,
 			sameSite: 'strict',
-			expires: new Date(session.expire),
-			secure: true
+			expires: new Date(session.expire)
 		});
 
 		throw redirect(301, '/');

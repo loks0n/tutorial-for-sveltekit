@@ -6,17 +6,20 @@ export async function GET({ url, locals, cookies }) {
 	const userId = url.searchParams.get('userId');
 	const secret = url.searchParams.get('secret');
 
+	const headers = new Headers();
+	headers.set('location', '/');
+
 	if (userId && secret) {
 		const session = await account.createSession(userId, secret);
 
-		cookies.set(SESSION_COOKIE, session.secret, {
-			path: '/',
-			httpOnly: true,
-			sameSite: 'strict',
-			expires: new Date(session.expire),
-			secure: true
-		});
+		headers.set(
+			'set-cookie',
+			cookies.serialize(SESSION_COOKIE, session.secret, {
+				sameSite: 'strict',
+				expires: new Date(session.expire)
+			})
+		);
 	}
 
-	return new Response(null, { status: 302, headers: { location: '/' } });
+	return new Response(null, { status: 302, headers });
 }

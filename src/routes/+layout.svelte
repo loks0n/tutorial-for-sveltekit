@@ -3,12 +3,12 @@
 	import '@appwrite.io/pink-icons';
 	import AppwriteLogoDark from '$lib/images/appwrite-logo-dark.svg';
 	import LoginImageDark from '$lib/images/login-dark-mode.png';
-
-	const loginImage = LoginImageDark;
 </script>
 
+<svelte:head><title>Server side rendering with Appwrite</title></svelte:head>
+
 <main class="grid-1-1 is-full-page" id="main">
-	<section class="u-flex u-flex-vertical" style:--url={`url(${loginImage})`}>
+	<section class="u-flex u-flex-vertical" style:--url={`url(${LoginImageDark})`}>
 		<div class="tag-line is-not-mobile">
 			<p>Server side rendering<span class="underscore">_</span></p>
 		</div>
