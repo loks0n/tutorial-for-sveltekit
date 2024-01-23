@@ -1,3 +1,4 @@
+import { SESSION_COOKIE } from '$lib/server/appwrite.js';
 import { redirect } from '@sveltejs/kit';
 
 export async function load({ locals }) {
@@ -13,7 +14,7 @@ export const actions = {
 		const { account } = locals.appwrite;
 
 		await account.deleteSession('current');
-		cookies.delete('session');
+		cookies.delete(SESSION_COOKIE);
 
 		throw redirect(301, '/signin');
 	}
