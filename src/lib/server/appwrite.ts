@@ -1,19 +1,19 @@
-import type { Cookies, RequestEvent } from '@sveltejs/kit';
-import { Client, Account, Users } from 'luke-node-appwrite-ssr';
+import type { RequestEvent } from '@sveltejs/kit';
+import { Client, Account } from 'luke-node-appwrite-ssr';
 import { APPWRITE_KEY } from '$env/static/private';
-import { PUBLIC_APPWRITE_ENDPOINT } from '$env/static/public';
+import { PUBLIC_APPWRITE_ENDPOINT, PUBLIC_APPWRITE_PROJECT_ID } from '$env/static/public';
 
 export const SESSION_COOKIE = 'a_session';
-const PROJECT_ID = 'ssr';
 
 export function createAppwriteClient(
 	event: RequestEvent,
-	clientOptions?: { setKey?: boolean; setSession?: boolean }
+	options?: { setKey?: boolean; setSession?: boolean }
 ) {
-	const client = new Client().setEndpoint(PUBLIC_APPWRITE_ENDPOINT).setProject(PROJECT_ID);
+	const client = new Client()
+		.setEndpoint(PUBLIC_APPWRITE_ENDPOINT)
+		.setProject(PUBLIC_APPWRITE_PROJECT_ID);
 
-	const { setKey = true, setSession = true } = clientOptions ?? {};
-
+	const { setKey = true, setSession = true } = options ?? {};
 	if (setKey) {
 		client.setKey(APPWRITE_KEY);
 	}
@@ -36,9 +36,6 @@ export function createAppwriteClient(
 	return {
 		get account() {
 			return new Account(client);
-		},
-		get users() {
-			return new Users(client);
 		}
 	};
 }
