@@ -17,7 +17,7 @@ export async function GET(event) {
 	}
 
 	const headers = new Headers({
-		location: '/'
+		location: '/account'
 	});
 
 	headers.set(
@@ -26,8 +26,7 @@ export async function GET(event) {
 			sameSite: 'strict',
 			expires: new Date(session.expire),
 			secure: true,
-			path: '/',
-			domain: event.url.origin
+			path: '/'
 		})
 	);
 
